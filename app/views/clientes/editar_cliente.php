@@ -35,7 +35,7 @@
 								 {	$nomb_nom = $cliente->orden;}
 							?>	
 
-							<input value="<?php echo  set_value('orden',$nomb_nom); ?>" type="text" class="form-control" id="orden" name="orden" placeholder="orden">
+							<input value="<?php echo  set_value('orden',$nomb_nom); ?>" type="text" class="form-control ttip" title="Este campo no admite decimales."  restriccion="entero" id="orden" name="orden" placeholder="orden">
 						</div>
 					</div>
 
@@ -165,7 +165,7 @@
 								if (isset($cliente->subtotal)) 
 								 {	$nomb_nom = $cliente->subtotal;}
 							?>	
-							<input value="<?php echo  set_value('subtotal',$nomb_nom); ?>" type="text" class="form-control" id="subtotal" name="subtotal" placeholder="Subtotal">
+							<input value="<?php echo  set_value('subtotal',$nomb_nom); ?>" type="text"  restriccion="decimal" class="form-control" id="subtotal" name="subtotal" placeholder="Subtotal">
 						</div>
 					</div>
 
@@ -177,7 +177,7 @@
 								if (isset($cliente->total)) 
 								 {	$nomb_nom = $cliente->total;}
 							?>	
-							<input value="<?php echo  set_value('total',$nomb_nom); ?>" type="text" class="form-control" id="total" name="total" placeholder="Total">
+							<input value="<?php echo  set_value('total',$nomb_nom); ?>" type="text" restriccion="decimal" class="form-control" id="total" name="total" placeholder="Total">
 						</div>
 					</div>
 

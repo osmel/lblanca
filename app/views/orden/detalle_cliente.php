@@ -69,10 +69,10 @@
 								<span>Reporte: <?php echo  $cliente->reporte;?></span>
 							</li>
 							<li class="list-group-item">							
-								<span>SubTotal: <?php echo  $cliente->subtotal;?></span>
+								<span>SubTotal: <?php echo  number_format($cliente->subtotal, 3, '.', ',');?></span>
 							</li>
 							<li class="list-group-item">							
-								<span>Total: <?php echo  $cliente->total;?></span>
+								<span>Total: <?php echo  number_format($cliente->total, 3, '.', ',');?></span>
 							</li>
 							<li class="list-group-item">							
 								<span>estatus: <?php echo  $cliente->estatus;?></span>
@@ -126,11 +126,12 @@
 
 						<div class="col-md-6">
 							<ul class="list-group">
+
 								<li class="list-group-item">							
-									<span>SubTotal: <?php echo  $orden->subtotal;?></span>
+									<span>SubTotal: <?php echo  number_format($orden->subtotal, 3, '.', ',');?></span>
 								</li>
 								<li class="list-group-item">							
-									<span>Total: <?php echo  $orden->total;?></span>
+									<span>Total: <?php echo  number_format($orden->total, 3, '.', ',');?></span>
 								</li>
 								<li class="list-group-item">							
 									<span>estatus: <?php echo  $orden->estatus;?></span>

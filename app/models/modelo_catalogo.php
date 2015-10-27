@@ -16,6 +16,9 @@
         $this->equipos             = $this->db->dbprefix('catalogo_equipo');
         $this->tecnicos    = $this->db->dbprefix('catalogo_tecnico');
         $this->estatus    = $this->db->dbprefix('catalogo_estatus');
+        $this->clientes    = $this->db->dbprefix('clientes');
+        $this->ordenes    = $this->db->dbprefix('orden');
+
 
     }
 
@@ -137,32 +140,14 @@
 
 
 
-public function tecnicos_en_uso($id_composicion) {
-                  return 0;
+public function tecnicos_en_uso($id_tecnico) {
 
           $result = $this->db->query("
-            select distinct r.id_composicion from (
+            select distinct r.id_tecnico from (
 
-            (select distinct id_composicion from ".$this->productos.")
-              union   
-
-            (select distinct id_composicion from ".$this->registros_temporales.")
-              union   
-            (select distinct id_composicion from ".$this->registros_cambios.")
-              union   
-
-            (select distinct id_composicion from ".$this->registros_entradas.")
-              union   
-
-            (select distinct id_composicion from ".$this->registros_salidas.")
-              union   
-
-            (select distinct id_composicion from ".$this->historico_registros_entradas.")
-              union   
-
-            (select distinct id_composicion from ".$this->historico_registros_salidas.")
+            (select distinct id_tecnico from ".$this->ordenes.")
               ) r 
-           where r.id_composicion='".$id_composicion."'                                
+           where r.id_tecnico='".$id_tecnico."'                                
 
           "
           );  
@@ -365,32 +350,13 @@ public function tecnicos_en_uso($id_composicion) {
 
 
 
-public function equipos_en_uso($id_composicion) {
-                  return 0;
+public function equipos_en_uso($id_equipo) {
 
           $result = $this->db->query("
-            select distinct r.id_composicion from (
-
-            (select distinct id_composicion from ".$this->productos.")
-              union   
-
-            (select distinct id_composicion from ".$this->registros_temporales.")
-              union   
-            (select distinct id_composicion from ".$this->registros_cambios.")
-              union   
-
-            (select distinct id_composicion from ".$this->registros_entradas.")
-              union   
-
-            (select distinct id_composicion from ".$this->registros_salidas.")
-              union   
-
-            (select distinct id_composicion from ".$this->historico_registros_entradas.")
-              union   
-
-            (select distinct id_composicion from ".$this->historico_registros_salidas.")
+            select distinct r.id_equipo from (
+                  (select distinct id_equipo from ".$this->clientes.")
               ) r 
-           where r.id_composicion='".$id_composicion."'                                
+           where r.id_equipo='".$id_equipo."'                                
 
           "
           );  
@@ -595,32 +561,18 @@ public function equipos_en_uso($id_composicion) {
 
 
 
-public function estatus_en_uso($id_composicion) {
-                  return 0;
+public function estatus_en_uso($id_estatus) {
+
 
           $result = $this->db->query("
-            select distinct r.id_composicion from (
+            select distinct r.id_estatus from (
 
-            (select distinct id_composicion from ".$this->productos.")
+            (select distinct id_estatus from ".$this->clientes.")
               union   
 
-            (select distinct id_composicion from ".$this->registros_temporales.")
-              union   
-            (select distinct id_composicion from ".$this->registros_cambios.")
-              union   
-
-            (select distinct id_composicion from ".$this->registros_entradas.")
-              union   
-
-            (select distinct id_composicion from ".$this->registros_salidas.")
-              union   
-
-            (select distinct id_composicion from ".$this->historico_registros_entradas.")
-              union   
-
-            (select distinct id_composicion from ".$this->historico_registros_salidas.")
+            (select distinct id_estatus from ".$this->ordenes.")
               ) r 
-           where r.id_composicion='".$id_composicion."'                                
+           where r.id_estatus='".$id_estatus."'                                
 
           "
           );  

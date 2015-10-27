@@ -12,8 +12,7 @@
 		<div class="panel panel-primary">
 			<div class="panel-heading">Listado de Clientes</div>
 			<div class="panel-body">
-			<div class="col-md-12">				
-				<div class="table-responsive">
+
 				<div class="col-md-6"></div>	
 				<div class="col-md-3">
 					<a href="<?php echo base_url(); ?>" class="btn btn-danger btn-block"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
@@ -21,6 +20,9 @@
 				<div class="col-md-3">
 					<a href="<?php echo base_url(); ?>nuevo_cliente" type="button" class="btn btn-success btn-block">Nuevo Cliente</a>
 				</div>
+			
+			<div class="col-md-12">				
+				<div class="table-responsive">
 				<br/>
 					<section>
 						<table id="tabla_clientes" class="display table table-striped table-bordered table-responsive" cellspacing="0" width="100%">

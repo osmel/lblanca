@@ -330,6 +330,53 @@ class Clientes extends CI_Controller {
   }
 
 
+///////////////////////////////////////////////////////////////////////
+
+
+
+  function eliminar_cliente($id = '', $nombrecompleto='', $baja=''){
+        $id_perfil=$this->session->userdata('id_perfil');
+           
+           $data['id']         = base64_decode($id);
+        $data['nombrecompleto']   = base64_decode($nombrecompleto);
+        $data['baja']   = base64_decode($baja);
+        
+        
+
+          switch ($id_perfil) {    
+                case 1:
+                      if ($data['baja']==0) {
+                              $data['activo']       = "desactivar";
+                      } else
+                      {
+                              $data['activo']       = "activar";
+                      }
+                      $this->load->view( 'clientes/eliminar_cliente', $data );
+                break;
+                default:
+                    redirect('');
+                 break;
+
+        }
+  }      
+
+
+  function validar_eliminar_cliente(){
+
+    $data['id']           = $this->input->post('id');
+    $data['baja']           = $this->input->post('baja');
+
+  
+    $data         =   $this->security->xss_clean($data);  
+    $estatus = $this->clientes->eliminar_cliente(  $data );
+    
+    if ( $estatus != FALSE ){
+      echo TRUE;
+    } else {
+      echo '<span class="error">No se ha podido cambiar el estatus de la Unidad</span>';
+    }
+  } 
+
 
 
 /////////////////validaciones/////////////////////////////////////////  

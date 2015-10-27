@@ -25,7 +25,8 @@
 					<div class="form-group">
 						<label for="orden" class="col-sm-3 col-md-2 control-label">orden</label>
 						<div class="col-sm-9 col-md-10">
-							<input type="text" class="form-control" id="orden" name="orden" placeholder="orden">
+							<input type="text" class="form-control ttip" title="Este campo no admite decimales."  restriccion="entero" id="orden" name="orden" placeholder="orden">
+							
 						</div>
 					</div>
 
@@ -105,14 +106,14 @@
 					<div class="form-group">
 						<label for="subtotal" class="col-sm-3 col-md-2 control-label">SubTotal</label>
 						<div class="col-sm-9 col-md-10">
-							<input type="text" class="form-control" id="subtotal" name="subtotal" placeholder="Subtotal">
+							<input type="text" class="form-control" restriccion="decimal" id="subtotal" name="subtotal" placeholder="Subtotal">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label for="total" class="col-sm-3 col-md-2 control-label">Total</label>
 						<div class="col-sm-9 col-md-10">
-							<input type="text" class="form-control" id="total" name="total" placeholder="Total">
+							<input type="text" class="form-control" restriccion="decimal" id="total" name="total" placeholder="Total">
 						</div>
 					</div>
 

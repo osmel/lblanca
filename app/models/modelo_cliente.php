@@ -64,7 +64,7 @@
 
           $this->db->select("SQL_CALC_FOUND_ROWS *", FALSE); //
           
-          $this->db->select('c.id,c.uid, c.orden');
+          $this->db->select('c.id,c.uid, c.orden, c.baja');
           $this->db->select('c.fecha_entrada');
           $this->db->select('c.nombre, c.domicilio, c.referencia, c.id_equipo, c.marca, c.falla, c.reporte, c.subtotal, c.total, c.id_estatus');
           $this->db->select('e.equipo equipo');
@@ -118,6 +118,7 @@
                                       7=>self::clientes_en_uso($row->id),
                                       8=>$row->id,
                                       9=>$row->uid,
+                                      10=>$row->baja,
                                     );
                       }
 
@@ -149,6 +150,19 @@
               $result->free_result();           
 
       } 
+
+
+        public function eliminar_cliente( $data ){
+                $this->db->set( 'baja', '(1 XOR '.$data["baja"].')', FALSE );
+                $this->db->where('id', $data['id'] );
+                $this->db->update($this->clientes );
+                
+                if ($this->db->affected_rows() > 0) {
+                    return TRUE;
+                }  else
+                     return FALSE;
+      
+        }              
 
 
 
@@ -200,6 +214,9 @@ public function clientes_en_uso($id_cliente) {
           $this->db->set( 'orden', $data['orden'] );  
           $this->db->set( 'uid', $data['uid'] );  
           $this->db->set( 'nombre', $data['nombre'] );  
+          
+          $data['fecha_entrada'] = date("Y-m-d H:i:s", strtotime($data['fecha_entrada']) );
+
           $this->db->set( 'fecha_entrada', $data['fecha_entrada'] );  
           $this->db->set( 'domicilio', $data['domicilio'] );  
           $this->db->set( 'referencia', $data['referencia'] );  
@@ -231,7 +248,11 @@ public function clientes_en_uso($id_cliente) {
           
           $this->db->set( 'orden', $data['orden'] );  
           $this->db->set( 'nombre', $data['nombre'] );  
-          $this->db->set( 'fecha_entrada', $data['fecha_entrada'] );  
+
+
+          $data['fecha_entrada'] = date("Y-m-d H:i:s", strtotime($data['fecha_entrada']) );
+
+          $this->db->set( 'fecha_entrada', $data['fecha_entrada']  );  
           $this->db->set( 'domicilio', $data['domicilio'] );  
           $this->db->set( 'referencia', $data['referencia'] );  
           $this->db->set( 'id_equipo', $data['id_equipo'] );  
@@ -321,6 +342,7 @@ public function clientes_en_uso($id_cliente) {
           $this->db->set( 'id_cliente', $data['id_cliente'] );  
           $this->db->set( 'id_tecnico', $data['id_tecnico'] );  
           
+          $data['fecha_entrega'] = date("Y-m-d H:i:s", strtotime($data['fecha_entrega']) );
           $this->db->set( 'fecha_entrega', $data['fecha_entrega'] );  
 
           $this->db->set( 'falla', $data['falla'] );  
@@ -345,6 +367,7 @@ public function clientes_en_uso($id_cliente) {
           $this->db->set( 'id_cliente', $data['id_cliente'] );  
           $this->db->set( 'id_tecnico', $data['id_tecnico'] );  
           
+          $data['fecha_entrega'] = date("Y-m-d H:i:s", strtotime($data['fecha_entrega']) );
           $this->db->set( 'fecha_entrega', $data['fecha_entrega'] );  
 
           $this->db->set( 'falla', $data['falla'] );  

@@ -98,7 +98,7 @@
 								if (isset($orden->subtotal)) 
 								 {	$nomb_nom = $orden->subtotal;}
 							?>	
-							<input value="<?php echo  set_value('subtotal',$nomb_nom); ?>" type="text" class="form-control" id="subtotal" name="subtotal" placeholder="Subtotal">
+							<input value="<?php echo  set_value('subtotal',$nomb_nom); ?>" restriccion="decimal" type="text" class="form-control" id="subtotal" name="subtotal" placeholder="Subtotal">
 						</div>
 					</div>
 
@@ -110,7 +110,7 @@
 								if (isset($orden->total)) 
 								 {	$nomb_nom = $orden->total;}
 							?>	
-							<input value="<?php echo  set_value('total',$nomb_nom); ?>" type="text" class="form-control" id="total" name="total" placeholder="Total">
+							<input value="<?php echo  set_value('total',$nomb_nom); ?>" restriccion="decimal" type="text" class="form-control" id="total" name="total" placeholder="Total">
 						</div>
 					</div>
 

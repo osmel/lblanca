@@ -1,24 +1,80 @@
 jQuery(document).ready(function($) {
 
+////////////////////////////////////////////////////////////////
+/////////////////////////restricciones de valores///////////////
+//////////////////////////////////////////////////////////////
 
 
-//////////////////////////////////////////////////////////
-/////////////////////USUARIOS/////////////////////////////
-/////////////////////////////////////////////////////////
+// entradas y editar y "minimo"
+jQuery('#orden[restriccion="entero"]').bind('keypress paste', function (event) {
+    var regex = new RegExp("^[0-9]+$");
+    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+    if (!regex.test(key)) {
+       event.preventDefault();
+       return false;
+    }
+});
 
+
+var reg = /^[0-9]{1,10}(\.[0-9]{0,3})?$/;
+
+jQuery('#subtotal[restriccion="decimal"]').bind('keypress paste', function (e) {
+    var nn = jQuery('#subtotal[restriccion="decimal"]');
+    var strValue = nn[0].value.toString() + String.fromCharCode(e.which);
+    strValue = jQuery.trim(strValue);
+    var bool = reg.test(strValue);
+    if (bool) {
+        return true;
+    }
+    else { 
+        e.preventDefault();
+    }
+});
+
+
+
+jQuery('#total[restriccion="decimal"]').bind('keypress paste', function (e) {
+    var nn = jQuery('#total[restriccion="decimal"]');
+    var strValue = nn[0].value.toString() + String.fromCharCode(e.which);
+    strValue = jQuery.trim(strValue);
+    var bool = reg.test(strValue);
+    if (bool) {
+        return true;
+    }
+    else { 
+        e.preventDefault();
+    }
+});
+
+
+// catalogo de proveedores
+/*
+jQuery('#codigo[restriccion="numletra"]').bind('keypress paste', function (event) {
+    var regex = new RegExp("^[a-zA-Z0-9]+$");
+    var key = String.fromCharCode(!event.charCode ? event.which : event.charCode);
+    if (!regex.test(key)) {
+       event.preventDefault();
+       return false;
+    }
+});
+*/
+
+
+
+
+
+////////////////////////////////////////////////////////////////
+/////////////////////////USUARIOS//////////////////////////////
+//////////////////////////////////////////////////////////////
 
 jQuery('#tabla_clientes').dataTable( {
-  
     "pagingType": "full_numbers",
-    
     "processing": true,
     "serverSide": true,
     "ajax": {
                 "url" : "procesando_clientes",
               "type": "POST",
-              
        },   
-
     "language": {  //tratamiento de lenguaje
       "lengthMenu": "Mostrar _MENU_ registros por página",
       "zeroRecords": "No hay registros",
@@ -42,12 +98,24 @@ jQuery('#tabla_clientes').dataTable( {
         "sortDescending": ": Activando para ordenar columnas descendentes"
       },
     },
+	
+	"rowCallback": function( row, data ) {
+	    // Bold the grade for all 'A' grade browsers
+	    if ( data[10] == 0 ) {
+	      jQuery('td', row).removeClass( "danger" );
+	    }
 
+	    if ( data[10] == 1 ) {
+	      jQuery('td', row).addClass( "danger" );
+	    }
+
+
+	  },		
 
     "columnDefs": [
     		/*
             { 
- 					visible: false,
+					visible: false,
                     "targets": [7,8,9]//
             },*/
             { 
@@ -59,12 +127,26 @@ jQuery('#tabla_clientes').dataTable( {
             {
                 "render": function ( data, type, row ) {
 
-	            texto='<td>';
-	              texto+='<a href="detalles_cliente/'+jQuery.base64.encode(row[8])+'" type="button"'; 
-	              texto+=' class="btn btn-warning btn-sm btn-block" >';
-	                texto+=' <span class="glyphicon glyphicon-edit"></span>';
-	              texto+=' </a>';
-	            texto+='</td>';
+
+
+  				if (row[10]==0) {
+			            texto='<td>';
+			              texto+='<a href="detalles_cliente/'+jQuery.base64.encode(row[8])+'" type="button"'; 
+			              texto+=' class="btn btn-warning btn-sm btn-block" >';
+			                texto+=' <span class="glyphicon glyphicon-edit"></span>';
+			              texto+=' </a>';
+			            texto+='</td>';
+	                      } else {
+		                texto=' <fieldset disabled> <td>';                
+		                  texto+=' <a href="#" type="button" '; 
+		                  texto+=' class="btn btn-warning btn-sm btn-block" >';
+		                  texto+=' <span class="glyphicon glyphicon-edit"></span>';
+		                  texto+=' </a>';
+		                texto+=' </td></fieldset>'; 
+                  }
+
+
+
 	              return texto; 
                 },
                 "targets": 7
@@ -73,19 +155,19 @@ jQuery('#tabla_clientes').dataTable( {
                 "render": function ( data, type, row ) {
 
                   if (row[7]==0) {
-	                  texto=' <td>';                
-	                  texto+=' <a href="eliminar_cliente/'+(row[0])+'/'+jQuery.base64.encode(row[1])+ '"'; 
-	                  texto+=' class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#modalMessage">';
-	                  texto+=' <span class="glyphicon glyphicon-off"></span>';
-	                  texto+=' </a>';
-	                texto+=' </td>';  
+	                    texto=' <td>';                
+		                  texto+=' <a href="eliminar_cliente/'+jQuery.base64.encode(row[8])+'/'+jQuery.base64.encode(row[2])+'/'+jQuery.base64.encode(row[10])+ '"'; 
+		                  texto+=' class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#modalMessage">';
+		                  texto+=' <span class="glyphicon glyphicon-off"></span>';
+		                  texto+=' </a>';
+		                texto+=' </td>'; 
 	                      } else {
-	                  texto=' <fieldset disabled> <td>';                
-	                  texto+=' <a href="#"'; 
-	                  texto+=' class="btn btn-danger btn-sm btn-block">';
-	                  texto+=' <span class="glyphicon glyphicon-off"></span>';
-	                  texto+=' </a>';
-	                texto+=' </td></fieldset>'; 
+		                texto=' <fieldset disabled> <td>';                
+		                  texto+=' <a href="#"'; 
+		                  texto+=' class="btn btn-danger btn-sm btn-block">';
+		                  texto+=' <span class="glyphicon glyphicon-off"></span>';
+		                  texto+=' </a>';
+		                texto+=' </td></fieldset>'; 
                   }
             	  return texto; 
                 },
@@ -174,12 +256,22 @@ jQuery('#tabla_usuarios').dataTable( {
 								 {
 					                "render": function ( data, type, row ) {
 
-									texto='<td>';
-										texto+=' <a href="eliminar_usuario/'+(row[4])+'/'+jQuery.base64.encode(row[0])+ '"'; 
-										texto+=' class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#modalMessage"> ';
-											texto+=' <span class="glyphicon glyphicon-remove"></span>';
-										texto+=' </a>';
-									texto+='</td>';
+									if (row[5]==0) {
+											texto='<td>';
+												texto+=' <a href="eliminar_usuario/'+(row[4])+'/'+jQuery.base64.encode(row[0])+ '"'; 
+												texto+=' class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#modalMessage"> ';
+													texto+=' <span class="glyphicon glyphicon-remove"></span>';
+												texto+=' </a>';
+											texto+='</td>';
+						                      } else {
+							                texto=' <fieldset disabled> <td>';                
+							                  texto+=' <a href="#" type="button" '; 
+							                  texto+=' class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#modalMessage"> ';
+							                  texto+=' <span class="glyphicon glyphicon-remove"></span>';
+							                  texto+=' </a>';
+							                texto+=' </td></fieldset>'; 
+					                  }
+
 
 
 										return texto;	
@@ -209,7 +301,7 @@ jQuery('#tabla_usuarios').dataTable( {
 							"next":       "Próximo",
 							"previous":   "Anterior"
 						},
-						"aria": {
+						"aria": { 
 							"sortAscending":  ": Activando para ordenar columnas ascendentes",
 							"sortDescending": ": Activando para ordenar columnas descendentes"
 						},

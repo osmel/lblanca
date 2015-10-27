@@ -13,10 +13,16 @@
       date_default_timezone_set('America/Mexico_City');   
 
 				//usuarios
-			$this->usuarios    = $this->db->dbprefix('usuarios');
+      			$this->usuarios    = $this->db->dbprefix('usuarios');
             $this->perfiles    = $this->db->dbprefix('perfiles');
-
             $this->historico_acceso = $this->db->dbprefix('historico_acceso');
+
+            $this->equipos             = $this->db->dbprefix('catalogo_equipo');
+            $this->tecnicos    = $this->db->dbprefix('catalogo_tecnico');
+            $this->estatus    = $this->db->dbprefix('catalogo_estatus');
+            $this->clientes    = $this->db->dbprefix('clientes');
+            $this->ordenes    = $this->db->dbprefix('orden');
+
 
 		}
 
@@ -281,7 +287,7 @@
           //filtro de busqueda
 
           $where = '(
-                      ( u.id <> "'.$id_session.'" )
+                      ( u.id <> '.$id_session.' )
 
                )';   
         $this->db->where($where);
@@ -331,6 +337,7 @@
                                       2=>$row->email,
                                       3=>$row->telefono,
                                       4=>$row->id,
+                                      5=>self::usuarios_en_uso($row->id),
                                     );
                       }
 
@@ -361,6 +368,37 @@
               $result->free_result();           
 
       }  
+
+
+
+
+      public function usuarios_en_uso($id_usuario) {
+
+          $result = $this->db->query("
+            select distinct r.id_usuario from (
+                  (select distinct id_usuario from ".$this->equipos.")
+                    union
+                  (select distinct id_usuario from ".$this->tecnicos.")
+                    union
+                  (select distinct id_usuario from ".$this->estatus.")
+                    union
+                  (select distinct id_usuario from ".$this->clientes.")
+                    union
+                  (select distinct id_usuario from ".$this->ordenes.")
+              ) r 
+           where r.id_usuario='".$id_usuario."'                                
+
+          "
+          );  
+
+           if ( $result->num_rows() > 0 ) {
+                  return 1;
+              } else 
+                  return 0;
+            $result->free_result();                 
+
+      }    
+
 
 
 
