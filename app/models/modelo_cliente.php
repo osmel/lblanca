@@ -276,8 +276,10 @@ public function clientes_en_uso($id_cliente) {
         }   
 
   public function buscar_cliente_detalle($data){
+
+
           $this->db->select('c.id,c.uid, c.orden');
-          $this->db->select('c.fecha_entrada');
+          $this->db->select('DATE_FORMAT((c.fecha_entrada),"%d-%m-%Y") fecha_entrada', false);
           $this->db->select('c.nombre, c.domicilio, c.referencia, c.id_equipo, c.marca, c.falla, c.reporte, c.subtotal, c.total, c.id_estatus');
           $this->db->select('e.equipo equipo');
           $this->db->select('t.estatu estatus');
@@ -306,7 +308,7 @@ public function clientes_en_uso($id_cliente) {
 
   public function buscar_orden_detalle($data){
           $this->db->select('o.id,o.id_cliente');
-          $this->db->select('o.fecha_entrega');
+          $this->db->select('DATE_FORMAT((o.fecha_entrega),"%d-%m-%Y") fecha_entrega', false);
           $this->db->select('t.tecnico tecnico ');
           
           $this->db->select('o.id_estatus, o.id_tecnico');
