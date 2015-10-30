@@ -6,22 +6,24 @@
       	$retorno ="ordenes";
     }
  $attr = array('class' => 'form-horizontal', 'id'=>'form_catalogos','name'=>$retorno,'method'=>'POST','autocomplete'=>'off','role'=>'form');
- echo form_open('validar_editar_orden', $attr);
+ echo form_open('validar_reingreso', $attr);
 ?>		
+
 
 <input type="hidden" id="id_cliente" name="id_cliente" value="<?php echo $id; ?>">
 <input type="hidden" id="id" name="id" value="<?php echo $orden->id; ?>">
 
 
+
 <div class="container">
 		<br>	
 	<div class="row">
-		<div class="col-sm-8 col-md-8"><h4>Editar orden</h4></div>
+		<div class="col-sm-8 col-md-8"><h4>Nuevo Reingreso</h4></div>
 	</div>
 	<br>
 	<div class="container row">
 		<div class="panel panel-primary">
-			<div class="panel-heading">Datos de orden</div>
+			<div class="panel-heading">Datos de Reingreso</div>
 			<div class="panel-body">
 
 				<!-- izquierda-->
@@ -32,11 +34,7 @@
 						<div class="col-sm-9 col-md-10">
 									<select name="id_tecnico" id="id_tecnico" class="form-control" >
 											<?php foreach ( $tecnicos as $tecnico ){ ?>
-													<?php 
-													if  ($tecnico->id==$orden->id_tecnico)
-														{$seleccionado='selected';} else {$seleccionado='';}
-													?>											
-													<option value="<?php echo $tecnico->id; ?>" <?php echo $seleccionado; ?> ><?php echo $tecnico->tecnico; ?></option>
+													<option value="<?php echo $tecnico->id; ?>"><?php echo $tecnico->tecnico; ?></option>
 											<?php } ?>
 									</select>
 						</div>
@@ -45,13 +43,7 @@
 					<div class="form-group">
 						<label for="fecha_entrega" class="col-sm-3 col-md-2 control-label">Fecha:<span class="obligatorio"> *</span></label>
 						<div class="col-sm-9 col-md-10">
-
-							<?php 
-								$nomb_nom='';
-								if (isset($orden->fecha_entrega)) 
-								 {	$nomb_nom = $orden->fecha_entrega;}
-							?>						
-							<input value="<?php echo  set_value('fecha_entrega',$nomb_nom); ?>" type="text" class="fecha  input-sm form-control" id="fecha_entrega" name="fecha_entrega" placeholder="DD-MM-YYYY">
+							<input type="text" class="fecha  input-sm form-control" id="fecha_entrega" name="fecha_entrega" placeholder="DD-MM-YYYY">
 								
 						</div>
 					</div>					
@@ -59,12 +51,7 @@
 					<div class="form-group">
 						<label for="falla" class="col-sm-3 col-md-2 control-label">Falla</label>
 						<div class="col-sm-9 col-md-10">
-							<?php 
-								$nomb_nom='';
-								if (isset($orden->falla)) 
-								 {	$nomb_nom = $orden->falla;}
-							?>	
-							<input value="<?php echo  set_value('falla',$nomb_nom); ?>" type="text" class="form-control" id="falla" name="falla" placeholder="Falla">
+							<input type="text" class="form-control" id="falla" name="falla" placeholder="Falla">
 						</div>
 					</div>
 
@@ -72,13 +59,7 @@
 					<div class="form-group">
 						<label for="reporte" class="col-sm-3 col-md-2 control-label">Reporte Técnico</label>
 						<div class="col-sm-9 col-md-10">
-							<?php 
-								$nomb_nom='';
-								if (isset($orden->reporte)) 
-								 {	$nomb_nom = $orden->reporte;}
-							?>	
-												
-							<textarea class="form-control" name="reporte" id="reporte" rows="7" placeholder="Reporte Técnico"><?php echo  set_value('reporte',$nomb_nom); ?></textarea>
+							<textarea class="form-control" name="reporte" id="reporte" rows="7" placeholder="Reporte Técnico"></textarea>
 						</div>
 					</div>	
 
@@ -95,24 +76,14 @@
 					<div class="form-group">
 						<label for="subtotal" class="col-sm-3 col-md-2 control-label">SubTotal</label>
 						<div class="col-sm-9 col-md-10">
-							<?php 
-								$nomb_nom='';
-								if (isset($orden->subtotal)) 
-								 {	$nomb_nom = $orden->subtotal;}
-							?>	
-							<input value="<?php echo  set_value('subtotal',$nomb_nom); ?>" restriccion="decimal" type="text" class="form-control" id="subtotal" name="subtotal" placeholder="Subtotal">
+							<input type="text" class="form-control" restriccion="decimal" id="subtotal" name="subtotal" placeholder="Subtotal">
 						</div>
 					</div>
 
 					<div class="form-group">
 						<label for="total" class="col-sm-3 col-md-2 control-label">Total</label>
 						<div class="col-sm-9 col-md-10">
-							<?php 
-								$nomb_nom='';
-								if (isset($orden->total)) 
-								 {	$nomb_nom = $orden->total;}
-							?>	
-							<input value="<?php echo  set_value('total',$nomb_nom); ?>" restriccion="decimal" type="text" class="form-control" id="total" name="total" placeholder="Total">
+							<input type="text" class="form-control" restriccion="decimal" id="total" name="total" placeholder="Total">
 						</div>
 					</div>
 
@@ -123,11 +94,7 @@
 						<div class="col-sm-9 col-md-10">
 									<select name="id_estatus" id="id_estatus" class="form-control" >
 											<?php foreach ( $estatus as $estatu ){ ?>
-													<?php 
-													if  ($estatu->id==$orden->id_estatus)
-														{$seleccionado='selected';} else {$seleccionado='';}
-													?>											
-													<option value="<?php echo $estatu->id; ?>" <?php echo $seleccionado; ?> ><?php echo $estatu->estatu; ?>											
+													<option value="<?php echo $estatu->id; ?>"><?php echo $estatu->estatu; ?></option>
 											<?php } ?>
 									</select>
 						</div>

@@ -5,6 +5,8 @@
 ?>
 <?php $this->load->view( 'header' ); ?>
 
+<input type="hidden" id="id" name="id" value="<?php echo $id; ?>">
+
 	<div class="container">
 		<div class="col-md-9"></div>	
 		<div class="col-md-3">
@@ -43,6 +45,16 @@
 							<li class="list-group-item">							
 								<span>Domicilio: <?php echo  $cliente->domicilio;?></span>
 							</li>
+	
+
+						</ul>
+					</div>
+
+									
+
+					<div class="col-md-6">
+						<ul class="list-group">
+
 							<li class="list-group-item">							
 								<span>Referencia: <?php echo  $cliente->referencia;?></span>
 							</li>
@@ -55,28 +67,10 @@
 								<span>marca: <?php echo  $cliente->marca;?></span>
 							</li>
 
-						</ul>
-					</div>
-
-									
-
-					<div class="col-md-6">
-						<ul class="list-group">
 							<li class="list-group-item">							
 								<span>Falla: <?php echo  $cliente->falla;?></span>
 							</li>
-							<li class="list-group-item">							
-								<span>Reporte: <?php echo  $cliente->reporte;?></span>
-							</li>
-							<li class="list-group-item">							
-								<span>SubTotal: <?php echo  number_format($cliente->subtotal, 3, '.', ',');?></span>
-							</li>
-							<li class="list-group-item">							
-								<span>Total: <?php echo  number_format($cliente->total, 3, '.', ',');?></span>
-							</li>
-							<li class="list-group-item">							
-								<span>estatus: <?php echo  $cliente->estatus;?></span>
-							</li>
+							
 
 						</ul>
 					</div>
@@ -137,6 +131,12 @@
 									<span>estatus: <?php echo  $orden->estatus;?></span>
 								</li>
 							</ul>
+
+							<div class="col-md-7"></div>	
+							<div class="col-md-5">
+								<a href="<?php echo base_url(); ?>reingreso/<?php echo base64_encode($cliente->id); ?>" class="btn btn-danger btn-block"><i class="glyphicon glyphicon-plus"></i> Reingreso</a>
+							</div>		
+
 						</div>
 
 
@@ -148,7 +148,29 @@
 
 
 
-		<!-- -->
+		<!-- regilla historica-->
+
+
+			<div class="col-md-12">				
+					<div class="table-responsive">
+					<br/>
+						<section>
+							<table id="tabla_historico_orden" class="display table table-striped table-bordered table-responsive" cellspacing="0" width="100%">
+								<thead>
+									<tr>
+										<th class="text-center cursora" style="width:10%">Técnico</th>
+										<th class="text-center cursora" style="width:10%">Fecha</th>
+										<th class="text-center cursora" style="width:20%">Falla</th>
+										<th class="text-center cursora" style="width:10%">Reporte</th>
+										<th class="text-center cursora" style="width:20%">SubTotal</th>
+										<th class="text-center cursora" style="width:10%">Total</th>
+										<th class="text-center cursora" style="width:10%">Estatus</th>
+									</tr>
+								</thead>
+							</table>
+						</section>
+				</div>
+			</div>		
 		
 
 

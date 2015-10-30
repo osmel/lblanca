@@ -54,6 +54,14 @@
 					</div>
 
 
+
+				</div>
+
+				<!-- Derecha-->
+				<div class="col-sm-6 col-md-6">
+
+
+
 					<div class="form-group">
 						<label for="referencia" class="col-sm-3 col-md-2 control-label">Referencia</label>
 						<div class="col-sm-9 col-md-10">
@@ -81,12 +89,6 @@
 						</div>
 					</div>
 
-				</div>
-
-				<!-- Derecha-->
-				<div class="col-sm-6 col-md-6">
-
-
 					<div class="form-group">
 						<label for="falla" class="col-sm-3 col-md-2 control-label">Falla</label>
 						<div class="col-sm-9 col-md-10">
@@ -94,41 +96,7 @@
 						</div>
 					</div>
 
-					<!-- comentarios-->	
-					<div class="form-group">
-						<label for="reporte" class="col-sm-3 col-md-2 control-label">Reporte Técnico</label>
-						<div class="col-sm-9 col-md-10">
-							<textarea class="form-control" name="reporte" id="reporte" rows="7" placeholder="Reporte Técnico"></textarea>
-						</div>
-					</div>	
-
-
-					<div class="form-group">
-						<label for="subtotal" class="col-sm-3 col-md-2 control-label">SubTotal</label>
-						<div class="col-sm-9 col-md-10">
-							<input type="text" class="form-control" restriccion="decimal" id="subtotal" name="subtotal" placeholder="Subtotal">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="total" class="col-sm-3 col-md-2 control-label">Total</label>
-						<div class="col-sm-9 col-md-10">
-							<input type="text" class="form-control" restriccion="decimal" id="total" name="total" placeholder="Total">
-						</div>
-					</div>
-
-
-
-					<div class="form-group">
-						<label for="id_estatus" class="col-sm-3 col-md-2 control-label">Estatus</label>
-						<div class="col-sm-9 col-md-10">
-									<select name="id_estatus" id="id_estatus" class="form-control" >
-											<?php foreach ( $estatus as $estatu ){ ?>
-													<option value="<?php echo $estatu->id; ?>"><?php echo $estatu->estatu; ?></option>
-											<?php } ?>
-									</select>
-						</div>
-					</div>
+				
 
 
 

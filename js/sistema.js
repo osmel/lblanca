@@ -807,6 +807,84 @@ jQuery('#tabla_cat_estatus').dataTable( {
 
 
 
+////////////////////////////////////////////////////////////////
+/////////////////////////Historico Ordenes////////////////////
+//////////////////////////////////////////////////////////////
+
+jQuery('#tabla_historico_orden').dataTable( {
+    "pagingType": "full_numbers",
+    "processing": true,
+    "serverSide": true,
+    "ajax": {
+                "url" : "/procesando_historico_orden",
+              "type": "POST",
+				 "data": function ( d ) {
+				     d.id_cliente = jQuery("#id").val();  
+				 }
+
+       },   
+    "language": {  //tratamiento de lenguaje
+      "lengthMenu": "Mostrar _MENU_ registros por página",
+      "zeroRecords": "No hay registros",
+      "info": "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+      "infoEmpty": "No hay registros disponibles",
+      "infoFiltered": "(Mostrando _TOTAL_ de _MAX_ registros totales)",  
+      "emptyTable":     "No hay registros",
+      "infoPostFix":    "",
+      "thousands":      ",",
+      "loadingRecords": "Leyendo...",
+      "processing":     "Procesando...",
+      "search":         "Buscar:",
+      "paginate": {
+        "first":      "Primero",
+        "last":       "Último",
+        "next":       "Siguiente",
+        "previous":   "Anterior"
+      },
+      "aria": {
+        "sortAscending":  ": Activando para ordenar columnas ascendentes",
+        "sortDescending": ": Activando para ordenar columnas descendentes"
+      },
+    },
+	
+	/*
+	"rowCallback": function( row, data ) {
+	    // Bold the grade for all 'A' grade browsers
+	    if ( data[10] == 0 ) {
+	      jQuery('td', row).removeClass( "danger" );
+	    }
+
+	    if ( data[10] == 1 ) {
+	      jQuery('td', row).addClass( "danger" );
+	    }
+
+
+	  },		
+	  */
+
+    "columnDefs": [
+    		/*
+            { 
+					visible: false,
+                    "targets": [7,8,9]//
+            },*/
+            { 
+                    "render": function ( data, type, row ) {
+                        return data;
+                    },
+                    "targets": [0,1,2,3,4,5,6]//
+            },
+            
+               
+               
+            ],
+  }); 
+
+
+
+
+
+
 
 });
 

@@ -80,6 +80,13 @@
 					</div>
 
 
+
+				</div>
+
+				<!-- Derecha-->
+				<div class="col-sm-6 col-md-6">
+
+
 					<div class="form-group">
 						<label for="referencia" class="col-sm-3 col-md-2 control-label">Referencia</label>
 						<div class="col-sm-9 col-md-10">
@@ -123,12 +130,6 @@
 						</div>
 					</div>
 
-				</div>
-
-				<!-- Derecha-->
-				<div class="col-sm-6 col-md-6">
-
-
 					<div class="form-group">
 						<label for="falla" class="col-sm-3 col-md-2 control-label">Falla</label>
 						<div class="col-sm-9 col-md-10">
@@ -142,64 +143,6 @@
 						</div>
 					</div>
 
-					<!-- comentarios-->	
-					<div class="form-group">
-						<label for="reporte" class="col-sm-3 col-md-2 control-label">Reporte Técnico</label>
-						<div class="col-sm-9 col-md-10">
-								<?php 
-									$nomb_nom='';
-									if (isset($cliente->reporte)) 
-									 {	$nomb_nom = $cliente->reporte;}
-								?>	
-
-							<textarea class="form-control" name="reporte" id="reporte" rows="7" placeholder="Reporte Técnico"><?php echo  set_value('reporte',$nomb_nom); ?></textarea>
-						</div>
-					</div>	
-
-
-					<div class="form-group">
-						<label for="subtotal" class="col-sm-3 col-md-2 control-label">SubTotal</label>
-						<div class="col-sm-9 col-md-10">
-							<?php 
-								$nomb_nom='';
-								if (isset($cliente->subtotal)) 
-								 {	$nomb_nom = $cliente->subtotal;}
-							?>	
-							<input value="<?php echo  set_value('subtotal',$nomb_nom); ?>" type="text"  restriccion="decimal" class="form-control" id="subtotal" name="subtotal" placeholder="Subtotal">
-						</div>
-					</div>
-
-					<div class="form-group">
-						<label for="total" class="col-sm-3 col-md-2 control-label">Total</label>
-						<div class="col-sm-9 col-md-10">
-							<?php 
-								$nomb_nom='';
-								if (isset($cliente->total)) 
-								 {	$nomb_nom = $cliente->total;}
-							?>	
-							<input value="<?php echo  set_value('total',$nomb_nom); ?>" type="text" restriccion="decimal" class="form-control" id="total" name="total" placeholder="Total">
-						</div>
-					</div>
-
-
-
-					<div class="form-group">
-						<label for="id_estatus" class="col-sm-3 col-md-2 control-label">Estatus</label>
-						<div class="col-sm-9 col-md-10">
-									<select name="id_estatus" id="id_estatus" class="form-control" >
-											<?php foreach ( $estatus as $estatu ){ ?>
-													<?php 
-													if  ($estatus->id==$cliente->id_estatus)
-														{$seleccionado='selected';} else {$seleccionado='';}
-													?>								
-
-													
-
-													<option value="<?php echo $estatu->id; ?>" <?php echo $seleccionado; ?> ><?php echo $estatu->estatu; ?></option>
-											<?php } ?>
-									</select>
-						</div>
-					</div>
 
 
 

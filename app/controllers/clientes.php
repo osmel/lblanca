@@ -87,10 +87,6 @@ class Clientes extends CI_Controller {
           $data['marca']   = $this->input->post('marca');
 
           $data['falla']   = $this->input->post('falla');
-          $data['reporte']   = $this->input->post('reporte');
-          $data['subtotal']   = $this->input->post('subtotal');
-          $data['total']   = $this->input->post('total');
-          $data['id_estatus']   = $this->input->post('id_estatus');
 
 
           $data         =   $this->security->xss_clean($data);  
@@ -200,6 +196,7 @@ class Clientes extends CI_Controller {
       switch ($id_perfil) {    
         case 1:
             $this->load->view( 'orden/detalle_cliente',$data);
+
           break;
         case 2:
             $this->load->view( 'orden/detalle_cliente',$data);
@@ -213,6 +210,8 @@ class Clientes extends CI_Controller {
 
 
     }    
+
+
     
   }
 
@@ -225,7 +224,7 @@ class Clientes extends CI_Controller {
         $id_perfil=$this->session->userdata('id_perfil');
 
       $data['retorno']   = 'detalles_cliente/'.$id;  
-      $data['id'] = base64_decode($id);
+      $data['id']        = base64_decode($id);
       $data['orden']   = $this->clientes->buscar_orden_detalle($data);
 
       $data['tecnicos']   = $this->catalogo->todos_tecnicos();
@@ -305,6 +304,7 @@ class Clientes extends CI_Controller {
 
       if ($this->form_validation->run() === TRUE){
 
+          $data['id']                   = $this->input->post('id');
           $data['id_cliente']           = $this->input->post('id_cliente');
           $data['id_tecnico']           = $this->input->post('id_tecnico');
           $data['fecha_entrega']    = $this->input->post('fecha_entrega');  
@@ -321,7 +321,7 @@ class Clientes extends CI_Controller {
           if ( $guardar !== FALSE ){
             echo true;
           } else {
-            echo '<span class="error"><b>E01</b> - La nueva  cliente no pudo ser agregada</span>';
+            echo '<span class="error"><b>E01</b> - La nueva orden no pudo ser agregada</span>';
           }
       } else {      
         echo validation_errors('<span class="error">','</span>');
@@ -377,6 +377,100 @@ class Clientes extends CI_Controller {
     }
   } 
 
+
+
+//////////////////////Historico de orden///////////////////////////////
+  public function procesando_historico_orden(){
+
+    $data=$_POST;
+    $busqueda = $this->clientes->buscador_historico_orden($data);
+
+    echo $busqueda;
+  } 
+
+
+
+
+
+ 
+  public function reingreso($id){
+  
+   if ( $this->session->userdata('session') !== TRUE ) {
+        redirect('login');
+    } else {
+        $id_perfil=$this->session->userdata('id_perfil');
+
+      $data['retorno']   = 'detalles_cliente/'.$id;  
+      $data['id'] = base64_decode($id);
+      
+      /*
+      para si quiere mantener los datos anteriores para solo modificar,
+      remplazar vista reingreso por editar_orden
+      en estos momentos solo fue remplazada por nueva_orden
+
+      */
+      $data['orden']   = $this->clientes->buscar_orden_detalle($data);
+
+      $data['tecnicos']   = $this->catalogo->todos_tecnicos();
+      $data['estatus']   = $this->catalogo->todos_estatus();
+
+
+
+      switch ($id_perfil) {    
+        case 1:
+              $this->load->view( 'orden/reingreso',$data);
+          break;
+            
+        case 2:
+              $this->load->view( 'orden/reingreso',$data);
+          break;
+        default:  
+          redirect('');
+          break;
+      }
+
+
+
+    }    
+    
+  }
+
+
+
+  function validar_reingreso(){
+    if ($this->session->userdata('session') !== TRUE) {
+      redirect('');
+    } else {
+      $this->form_validation->set_rules('falla', 'Falla', 'trim|required|min_length[3]|max_lenght[180]|xss_clean');
+
+      if ($this->form_validation->run() === TRUE){
+
+          $data['id']                   = $this->input->post('id');
+          $data['id_cliente']           = $this->input->post('id_cliente');
+          $data['id_tecnico']           = $this->input->post('id_tecnico');
+          $data['fecha_entrega']    = $this->input->post('fecha_entrega');  
+
+          $data['falla']   = $this->input->post('falla');
+          $data['reporte']   = $this->input->post('reporte');
+          $data['subtotal']   = $this->input->post('subtotal');
+          $data['total']   = $this->input->post('total');
+          $data['id_estatus']   = $this->input->post('id_estatus');
+
+
+          $data         =   $this->security->xss_clean($data);  
+          
+           $this->clientes->reingresar_orden( $data );
+          $guardar            = $this->clientes->editar_orden( $data );
+          if ( $guardar !== FALSE ){
+            echo true;
+          } else {
+            echo '<span class="error"><b>E01</b> - El nuevo reingreso no pudo ser agregado</span>';
+          }
+      } else {      
+        echo validation_errors('<span class="error">','</span>');
+      }
+    }
+  }
 
 
 /////////////////validaciones/////////////////////////////////////////  

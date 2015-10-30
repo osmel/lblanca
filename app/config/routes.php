@@ -154,12 +154,26 @@ $route['validar_nuevo_orden']              	= 'clientes/validar_nuevo_orden';
 $route['validar_editar_orden']              	= 'clientes/validar_editar_orden';
 
 
+$route['reingreso/(:any)']					= 'clientes/reingreso/$1';
+$route['validar_reingreso']              	= 'clientes/validar_reingreso';
+
+
 $route['cliente/(:any)']					 	= 'clientes/cliente/$1';
 $route['validar_editar_cliente']              	= 'clientes/validar_editar_cliente';
 
 $route['eliminar_cliente/(:any)/(:any)/(:any)'] 	= 'clientes/eliminar_cliente/$1/$2/$3';
 $route['validar_eliminar_cliente'] 	= 'clientes/validar_eliminar_cliente';
 
+
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////Historico de orden////////////////////
+///////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////
+
+
+
+$route['procesando_historico_orden']    		     = 'clientes/procesando_historico_orden';
 
 /* End of file routes.php */
 /* Location: ./application/config/routes.php */

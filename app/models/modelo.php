@@ -23,7 +23,16 @@
             $this->clientes    = $this->db->dbprefix('clientes');
             $this->ordenes    = $this->db->dbprefix('orden');
 
+/*
+    Rojo: terminado 
+    Verde: “Garantia O Reingreso”,
+    Azul claro:  Presupuesto Aceptado, 
+    Azul Fuerte: Pendiente, 
+    Naranja: Cancelado.
+    blanco: "servicios nuevos o reprogramados"
+*/
 
+    
 		}
 
 		//login

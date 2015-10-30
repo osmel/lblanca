@@ -19,6 +19,10 @@
         $this->clientes    = $this->db->dbprefix('clientes');
         $this->ordenes    = $this->db->dbprefix('orden');
 
+        $this->historico_ordenes    = $this->db->dbprefix('historico_orden');
+
+        
+
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////
@@ -66,9 +70,8 @@
           
           $this->db->select('c.id,c.uid, c.orden, c.baja');
           $this->db->select('c.fecha_entrada');
-          $this->db->select('c.nombre, c.domicilio, c.referencia, c.id_equipo, c.marca, c.falla, c.reporte, c.subtotal, c.total, c.id_estatus');
+          $this->db->select('c.nombre, c.domicilio, c.referencia, c.id_equipo, c.marca, c.falla');
           $this->db->select('e.equipo equipo');
-          $this->db->select('s.estatu estatus');
 
           $this->db->from($this->clientes.' as c');
           $this->db->join($this->equipos.' As e', 'c.id_equipo = e.id','LEFT');
@@ -113,8 +116,8 @@
                                       2=>$row->nombre,
                                       3=>$row->equipo,
                                       4=>$row->falla,
-                                      5=>$row->total,
-                                      6=>$row->estatus,
+                                      5=>"no se pone",
+                                      6=>"falta estatus",
                                       7=>self::clientes_en_uso($row->id),
                                       8=>$row->id,
                                       9=>$row->uid,
@@ -224,10 +227,6 @@ public function clientes_en_uso($id_cliente) {
           $this->db->set( 'marca', $data['marca'] );  
 
           $this->db->set( 'falla', $data['falla'] );  
-          $this->db->set( 'reporte', $data['reporte'] );  
-          $this->db->set( 'subtotal', $data['subtotal'] );  
-          $this->db->set( 'total', $data['total'] );  
-          $this->db->set( 'id_estatus', $data['id_estatus'] );  
 
           $this->db->insert($this->clientes );
           if ($this->db->affected_rows() > 0){
@@ -378,7 +377,10 @@ public function clientes_en_uso($id_cliente) {
           $this->db->set( 'total', $data['total'] );  
           $this->db->set( 'id_estatus', $data['id_estatus'] );  
 
+          $this->db->where('id', $data['id'] );
+
           $this->db->update($this->ordenes );
+
           if ($this->db->affected_rows() > 0){
                     return TRUE;
                 } else {
@@ -386,6 +388,221 @@ public function clientes_en_uso($id_cliente) {
                 }
                 $result->free_result();
         }          
+
+
+////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////Historico de orden//////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////
+
+        public function reingresar_orden( $data ){
+
+          
+          $this->db->select('id id_orden, id_cliente, fecha_entrega, id_tecnico, falla, reporte, subtotal, total, id_estatus, id_usuario');
+
+          $this->db->from($this->ordenes.' as o');
+
+          $where = '(
+                      (
+                        ( o.id =  '.$data['id'].' ) 
+                        
+                       )
+          )';   
+          $this->db->where($where);
+          $result = $this->db->get();
+
+
+          $objeto = $result->result();
+
+          //copiar a tabla "registros"
+          foreach ($objeto as $key => $value) {
+            $this->db->insert($this->historico_ordenes, $value); 
+          }
+
+
+        }       
+
+
+        public function total_historico_orden(){
+              $id_session = $this->session->userdata('id');
+
+
+
+              $this->db->from($this->historico_ordenes.' as o');
+              $this->db->join($this->tecnicos.' As t', 'o.id_tecnico = t.id','LEFT');
+              $this->db->join($this->estatus.' As e', 'o.id_estatus = e.id','LEFT');
+              /*
+              $where = '(
+                          (
+                            ( o.id_cliente =  '.$data['id_cliente'].' ) 
+                            
+                           )
+              )';  
+
+            
+              $this->db->where($where);
+              */
+
+
+              $cant = $this->db->count_all_results();          
+              if ( $cant > 0 )
+                 return $cant;
+              else
+                 return 0;         
+       }     
+
+
+      public function buscador_historico_orden($data){
+
+
+          $cadena = addslashes($data['search']['value']);
+          $inicio = $data['start'];
+          $largo = $data['length'];
+          
+
+          $id_cliente = $data['id_cliente'];
+
+          $columa_order = $data['order'][0]['column'];
+                 $order = $data['order'][0]['dir'];
+
+
+
+          switch ($columa_order) {
+                   case '0':
+                        $columna = 't.tecnico';
+                     break;
+                   case '1':
+                        $columna = 'o.fecha_entrega';
+                     break;
+
+                   case '2':
+                        $columna = 'o.falla';
+                     break;
+
+                   case '3':
+                        $columna = 'o.reporte';
+                     break;
+
+                   case '4':
+                        $columna = 'o.subtotal';
+                     break;
+
+                   case '5':
+                        $columna = 'o.total';
+                     break;
+
+                   case '6':
+                        $columna = 'e.estatu';
+                     break;
+
+                   default:
+                        $columna = 't.tecnico';
+                     break;
+            }                 
+
+                                      
+
+          $id_session = $this->db->escape($this->session->userdata('id'));
+
+          $this->db->select("SQL_CALC_FOUND_ROWS *", FALSE); //
+ 
+          $this->db->select('o.id, o.id_orden, o.id_cliente');
+          $this->db->select('DATE_FORMAT((o.fecha_entrega),"%d-%m-%Y") fecha_entrega', false);
+          $this->db->select('t.tecnico tecnico');
+          
+          $this->db->select('o.id_estatus, o.id_tecnico');
+
+          $this->db->select('o.falla, o.reporte, o.subtotal, o.total');
+          $this->db->select('e.estatu estatus');
+
+
+          $this->db->from($this->historico_ordenes.' as o');
+          $this->db->join($this->tecnicos.' As t', 'o.id_tecnico = t.id','LEFT');
+          $this->db->join($this->estatus.' As e', 'o.id_estatus = e.id','LEFT');
+         
+          $where = '(
+                      (
+                        ( o.id_cliente =  '.$id_cliente.' ) 
+                        
+                       )
+          )';             
+         
+
+         
+          //filtro de busqueda
+  /*     
+          $where = '(
+                      (
+                        ( c.orden LIKE  "%'.$cadena.'%" ) OR (c.nombre LIKE  "%'.$cadena.'%")
+                        
+                       )
+            )';   
+*/
+
+
+  
+          $this->db->where($where);
+    
+          //ordenacion
+          $this->db->order_by($columna, $order); 
+
+          //paginacion
+          $this->db->limit($largo,$inicio); 
+
+
+          $result = $this->db->get();
+
+              if ( $result->num_rows() > 0 ) {
+
+                    $cantidad_consulta = $this->db->query("SELECT FOUND_ROWS() as cantidad");
+                    $found_rows = $cantidad_consulta->row(); 
+                    $registros_filtrados =  ( (int) $found_rows->cantidad);
+
+                  $retorno= " ";  
+                  foreach ($result->result() as $row) {
+                               $dato[]= array(
+                                      
+                                      0=>$row->tecnico,
+                                      1=>$row->fecha_entrega,
+                                      2=>$row->falla,
+                                      3=>$row->reporte,
+                                      4=>$row->subtotal,
+                                      5=>$row->total,
+                                      6=>$row->estatus,
+                                      7=>$row->id,
+                                      8=>$row->id_cliente,
+
+                                    );
+                      }
+
+
+    
+
+
+                      return json_encode ( array(
+                        "draw"            => intval( $data['draw'] ),
+                        "recordsTotal"    => intval( self::total_historico_orden() ), 
+                        "recordsFiltered" =>   $registros_filtrados, 
+                        "data"            =>  $dato 
+                      ));
+                    
+              }   
+              else {
+                  $output = array(
+                  "draw" =>  intval( $data['draw'] ),
+                  "recordsTotal" => 0,
+                  "recordsFiltered" =>0,
+                  "aaData" => array()
+                  );
+                  $array[]="";
+                  return json_encode($output);
+                  
+
+              }
+
+              $result->free_result();           
+
+      } 
+
 
 
 	} 
