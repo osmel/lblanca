@@ -25,7 +25,7 @@
 					</div>
 
 					<div class="col-md-3 col-md-offset-6 col-sm-6 col-xs-6">
-						<div class="header-titulo text-right">Línea Blanca</div>
+						<div class="header-titulo text-right">Servicio Especializado en Línea Blanca</div>
 						<div class="text-right usuario"> Bienvenid@: <a href="<?php echo base_url(); ?>actualizar_perfil"><?php echo $this->session->userdata( 'nombre_completo' ); ?></a></div>
 					</div>
 

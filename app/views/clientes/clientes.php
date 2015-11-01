@@ -13,10 +13,20 @@
 			<div class="panel-heading">Listado de Clientes</div>
 			<div class="panel-body">
 
-				<div class="col-md-6"></div>	
+				<div class="col-md-3"></div>	
 				<div class="col-md-3">
 					<a href="<?php echo base_url(); ?>" class="btn btn-danger btn-block"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
 				</div>
+
+				
+					
+				<div class="col-sm-3 col-md-3">
+					<fieldset id="disa_reportes"> 	
+					     <a style="padding:8px;" id="impresion_reporte" type="button" class="btn btn-success btn-block">Imprimir</a>
+					</fieldset>		
+				</div>
+					
+				
 				<div class="col-md-3">
 					<a href="<?php echo base_url(); ?>nuevo_cliente" type="button" class="btn btn-success btn-block">Nuevo Cliente</a>
 				</div>
@@ -33,7 +43,6 @@
 									<th class="text-center cursora" style="width:20%">Nombre</th>
 									<th class="text-center cursora" style="width:10%">Equipo</th>
 									<th class="text-center cursora" style="width:20%">Falla</th>
-									<th class="text-center cursora" style="width:10%">Total</th>
 									<th class="text-center cursora" style="width:10%">Estatus</th>
 									<th class="text-center" style="width:5%"><strong>Detalles</strong></th>
 									<th class="text-center" style="width:5%"><strong>Baja Temporal</strong></th>

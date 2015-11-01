@@ -1,6 +1,120 @@
 jQuery(document).ready(function($) {
 
 ////////////////////////////////////////////////////////////////
+///////////////////////////////Imprimir////////////////////////
+//////////////////////////////////////////////////////////////
+
+//Agregar las estradas a salidas
+jQuery('body').on('click','#impresion_reporte', function (e) {
+	
+
+	  	  busqueda      = jQuery('input[type=search]').val();
+	   
+
+	   /*
+	   extra_search = jQuery("#botones").val(); 
+	   id_estatus = jQuery("#id_estatuss").val(); 
+	
+	   id_descripcion = jQuery("#producto").val(); 
+	   if (id_descripcion !='') {
+	   	  id_descripcion = jQuery('#producto option:selected').text();
+	   }
+
+	   id_color = jQuery("#color").val(); 
+	   id_composicion = jQuery("#composicion").val(); 
+	   id_calidad = jQuery("#calidad").val(); 
+		
+		factura_reporte = jQuery('#factura_reporte').val();					
+
+		proveedor = jQuery("#editar_proveedor_reporte").val(); 	   
+
+		var fecha = (jQuery('.fecha_reporte').val()).split(' / ');
+
+		fecha_inicial = fecha[0];
+		fecha_final = fecha[1];
+		*/
+
+    abrir('POST', 'imprimir_reportes', {
+    			busqueda:busqueda,
+			
+			/*
+			extra_search:extra_search,
+			id_estatus:id_estatus,
+
+			id_descripcion:id_descripcion, 
+			id_color:id_color, 
+			id_composicion:id_composicion, 
+			id_calidad:id_calidad,
+
+			factura_reporte: factura_reporte,
+
+			proveedor:proveedor, 
+			fecha_inicial,fecha_inicial, 
+			fecha_final: fecha_final,*/
+    }, '_blank' );
+		        
+	
+});
+
+
+
+jQuery('body').on('click','#impresion_detalles', function (e) {
+	
+		   id = jQuery("#id").val(); 
+		  	  	 
+
+	   /*
+	    busqueda      = jQuery('input[type=search]').val();
+	   
+	   extra_search = jQuery("#botones").val(); 
+	   id_estatus = jQuery("#id_estatuss").val(); 
+	
+	   id_descripcion = jQuery("#producto").val(); 
+	   if (id_descripcion !='') {
+	   	  id_descripcion = jQuery('#producto option:selected').text();
+	   }
+
+	   id_color = jQuery("#color").val(); 
+	   id_composicion = jQuery("#composicion").val(); 
+	   id_calidad = jQuery("#calidad").val(); 
+		
+		factura_reporte = jQuery('#factura_reporte').val();					
+
+		proveedor = jQuery("#editar_proveedor_reporte").val(); 	   
+
+		var fecha = (jQuery('.fecha_reporte').val()).split(' / ');
+
+		fecha_inicial = fecha[0];
+		fecha_final = fecha[1];
+		*/
+
+    abrir('POST', '/imprimir_detalle', {
+    			id:id,
+			
+			/*
+			busqueda:busqueda,
+			extra_search:extra_search,
+			id_estatus:id_estatus,
+
+			id_descripcion:id_descripcion, 
+			id_color:id_color, 
+			id_composicion:id_composicion, 
+			id_calidad:id_calidad,
+
+			factura_reporte: factura_reporte,
+
+			proveedor:proveedor, 
+			fecha_inicial,fecha_inicial, 
+			fecha_final: fecha_final,*/
+    }, '_blank' );
+		        
+	
+});
+
+
+
+
+////////////////////////////////////////////////////////////////
 /////////////////////////restricciones de valores///////////////
 //////////////////////////////////////////////////////////////
 
@@ -101,16 +215,30 @@ jQuery('#tabla_clientes').dataTable( {
 	
 	"rowCallback": function( row, data ) {
 	    // Bold the grade for all 'A' grade browsers
-	    if ( data[10] == 0 ) {
+	    if ( data[9] == 0 ) {
 	      jQuery('td', row).removeClass( "danger" );
 	    }
 
-	    if ( data[10] == 1 ) {
+	    if ( data[9] == 1 ) {
 	      jQuery('td', row).addClass( "danger" );
 	    }
 
 
+
 	  },		
+
+
+"infoCallback": function( settings, start, end, max, total, pre ) {
+
+			if (settings.json.recordsTotal==0) {
+				jQuery("#disa_reportes").attr('disabled', true);					
+			} else {
+				jQuery("#disa_reportes").attr('disabled', false);					
+			}
+
+	    return pre
+  	} ,    
+
 
     "columnDefs": [
     		/*
@@ -122,16 +250,16 @@ jQuery('#tabla_clientes').dataTable( {
                     "render": function ( data, type, row ) {
                         return data;
                     },
-                    "targets": [1,2,3,4,5,6]//
+                    "targets": [1,2,3,4,5]//
             },
             {
                 "render": function ( data, type, row ) {
 
 
 
-  				if (row[10]==0) {
+  				if (row[9]==0) {
 			            texto='<td>';
-			              texto+='<a href="detalles_cliente/'+jQuery.base64.encode(row[8])+'" type="button"'; 
+			              texto+='<a href="detalles_cliente/'+jQuery.base64.encode(row[7])+'" type="button"'; 
 			              texto+=' class="btn btn-warning btn-sm btn-block" >';
 			                texto+=' <span class="glyphicon glyphicon-edit"></span>';
 			              texto+=' </a>';
@@ -149,14 +277,14 @@ jQuery('#tabla_clientes').dataTable( {
 
 	              return texto; 
                 },
-                "targets": 7
+                "targets": 6
             },
             {
                 "render": function ( data, type, row ) {
 
-                  if (row[7]==0) {
+                  if (row[6]==0) {
 	                    texto=' <td>';                
-		                  texto+=' <a href="eliminar_cliente/'+jQuery.base64.encode(row[8])+'/'+jQuery.base64.encode(row[2])+'/'+jQuery.base64.encode(row[10])+ '"'; 
+		                  texto+=' <a href="eliminar_cliente/'+jQuery.base64.encode(row[7])+'/'+jQuery.base64.encode(row[2])+'/'+jQuery.base64.encode(row[9])+ '"'; 
 		                  texto+=' class="btn btn-danger btn-sm btn-block" data-toggle="modal" data-target="#modalMessage">';
 		                  texto+=' <span class="glyphicon glyphicon-off"></span>';
 		                  texto+=' </a>';
@@ -171,7 +299,7 @@ jQuery('#tabla_clientes').dataTable( {
                   }
             	  return texto; 
                 },
-                "targets": 8
+                "targets": 7
             },
                
                

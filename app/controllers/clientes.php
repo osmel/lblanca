@@ -71,7 +71,12 @@ class Clientes extends CI_Controller {
     if ($this->session->userdata('session') !== TRUE) {
       redirect('');
     } else {
-      $this->form_validation->set_rules('nombre', 'nombre', 'trim|required|min_length[3]|max_lenght[180]|xss_clean');
+
+      $this->form_validation->set_rules('orden', 'Orden', 'trim|required|numeric|xss_clean');
+      $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required|min_length[3]|max_lenght[60]|xss_clean');
+      $this->form_validation->set_rules('fecha_entrada', 'Fecha', 'trim|required|xss_clean');
+      $this->form_validation->set_rules('domicilio', 'Domicilio', 'trim|required|min_length[3]|max_lenght[60]|xss_clean');
+      $this->form_validation->set_rules('falla', 'Falla', 'trim|required|min_length[3]|max_lenght[60]|xss_clean');
 
       if ($this->form_validation->run() === TRUE){
 
@@ -85,17 +90,21 @@ class Clientes extends CI_Controller {
           $data['referencia']       = $this->input->post('referencia');
           $data['id_equipo']   = $this->input->post('id_equipo');
           $data['marca']   = $this->input->post('marca');
-
           $data['falla']   = $this->input->post('falla');
 
 
           $data         =   $this->security->xss_clean($data);  
-          $guardar            = $this->clientes->anadir_cliente( $data );
-          if ( $guardar !== FALSE ){
-            echo true;
+          $check = $this->clientes->check_existente_orden($data);
+          if ( $check != FALSE ){
+              $guardar            = $this->clientes->anadir_cliente( $data );
+              if ( $guardar !== FALSE ){
+                echo true;
+              } else {
+                echo '<span class="error"><b>E01</b> - La nueva  cliente no pudo ser agregada</span>';
+              }
           } else {
-            echo '<span class="error"><b>E01</b> - La nueva  cliente no pudo ser agregada</span>';
-          }
+              echo '<span class="error">La <b>Orden</b> ya se encuentra dada de alta.</span>';
+          }    
       } else {      
         echo validation_errors('<span class="error">','</span>');
       }
@@ -144,7 +153,12 @@ class Clientes extends CI_Controller {
     if ($this->session->userdata('session') !== TRUE) {
       redirect('');
     } else {
-      $this->form_validation->set_rules('nombre', 'nombre', 'trim|required|min_length[3]|max_lenght[180]|xss_clean');
+
+      $this->form_validation->set_rules('orden', 'Orden', 'trim|required|numeric|xss_clean');
+      $this->form_validation->set_rules('nombre', 'Nombre', 'trim|required|min_length[3]|max_lenght[60]|xss_clean');
+      $this->form_validation->set_rules('fecha_entrada', 'Fecha', 'trim|required|xss_clean');
+      $this->form_validation->set_rules('domicilio', 'Domicilio', 'trim|required|min_length[3]|max_lenght[60]|xss_clean');
+      $this->form_validation->set_rules('falla', 'Falla', 'trim|required|min_length[3]|max_lenght[60]|xss_clean');
 
       if ($this->form_validation->run() === TRUE){
 
@@ -167,12 +181,17 @@ class Clientes extends CI_Controller {
 
 
           $data         =   $this->security->xss_clean($data);  
-          $guardar            = $this->clientes->editar_cliente( $data );
-          if ( $guardar !== FALSE ){
-            echo true;
+          $check = $this->clientes->check_existente_editar_orden($data);
+          if ( $check != FALSE ){
+              $guardar            = $this->clientes->editar_cliente( $data );
+              if ( $guardar !== FALSE ){
+                echo true;
+              } else {
+                echo '<span class="error"><b>E01</b> - El nuevo cliente no pudo ser agregada</span>';
+              }
           } else {
-            echo '<span class="error"><b>E01</b> - El nuevo cliente no pudo ser agregada</span>';
-          }
+              echo '<span class="error">La <b>Orden</b> ya se encuentra dada de alta.</span>';
+          }                
       } else {      
         echo validation_errors('<span class="error">','</span>');
       }
@@ -267,7 +286,13 @@ class Clientes extends CI_Controller {
     if ($this->session->userdata('session') !== TRUE) {
       redirect('');
     } else {
-      $this->form_validation->set_rules('falla', 'Falla', 'trim|required|min_length[3]|max_lenght[180]|xss_clean');
+
+      $this->form_validation->set_rules('fecha_entrega', 'Fecha', 'trim|required|xss_clean');
+      $this->form_validation->set_rules('falla', 'Falla', 'trim|required|min_length[3]|max_lenght[60]|xss_clean');
+      $this->form_validation->set_rules('reporte', 'Reporte', 'trim|required|min_length[3]|max_lenght[60]|xss_clean');
+
+      $this->form_validation->set_rules('subtotal', 'SubTotal', 'trim|required|numeric|xss_clean');
+      $this->form_validation->set_rules('total', 'Total', 'trim|required|numeric|xss_clean');
 
       if ($this->form_validation->run() === TRUE){
 
@@ -300,7 +325,13 @@ class Clientes extends CI_Controller {
     if ($this->session->userdata('session') !== TRUE) {
       redirect('');
     } else {
-      $this->form_validation->set_rules('falla', 'Falla', 'trim|required|min_length[3]|max_lenght[180]|xss_clean');
+  
+      $this->form_validation->set_rules('fecha_entrega', 'Fecha', 'trim|required|xss_clean');
+      $this->form_validation->set_rules('falla', 'Falla', 'trim|required|min_length[3]|max_lenght[60]|xss_clean');
+      $this->form_validation->set_rules('reporte', 'Reporte', 'trim|required|min_length[3]|max_lenght[60]|xss_clean');
+
+      $this->form_validation->set_rules('subtotal', 'SubTotal', 'trim|required|numeric|xss_clean');
+      $this->form_validation->set_rules('total', 'Total', 'trim|required|numeric|xss_clean');
 
       if ($this->form_validation->run() === TRUE){
 
@@ -441,7 +472,13 @@ class Clientes extends CI_Controller {
     if ($this->session->userdata('session') !== TRUE) {
       redirect('');
     } else {
-      $this->form_validation->set_rules('falla', 'Falla', 'trim|required|min_length[3]|max_lenght[180]|xss_clean');
+
+      $this->form_validation->set_rules('fecha_entrega', 'Fecha', 'trim|required|xss_clean');
+      $this->form_validation->set_rules('falla', 'Falla', 'trim|required|min_length[3]|max_lenght[60]|xss_clean');
+      $this->form_validation->set_rules('reporte', 'Reporte', 'trim|required|min_length[3]|max_lenght[60]|xss_clean');
+
+      $this->form_validation->set_rules('subtotal', 'SubTotal', 'trim|required|numeric|xss_clean');
+      $this->form_validation->set_rules('total', 'Total', 'trim|required|numeric|xss_clean');
 
       if ($this->form_validation->run() === TRUE){
 

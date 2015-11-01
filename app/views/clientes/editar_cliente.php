@@ -27,7 +27,7 @@
 				<div class="col-sm-6 col-md-6">
 
 					<div class="form-group">
-						<label for="orden" class="col-sm-3 col-md-2 control-label">orden</label>
+						<label for="orden" class="col-sm-3 col-md-2 control-label">Orden<span class="obligatorio"> *</span></label>
 						<div class="col-sm-9 col-md-10">
 							<?php 
 								$nomb_nom='';
@@ -40,7 +40,7 @@
 					</div>
 
 					<div class="form-group">
-						<label for="nombre" class="col-sm-3 col-md-2 control-label">Nombre</label>
+						<label for="nombre" class="col-sm-3 col-md-2 control-label">Nombre<span class="obligatorio"> *</span></label>
 						<div class="col-sm-9 col-md-10">
 							<?php 
 								$nomb_nom='';
@@ -67,7 +67,7 @@
 
 
 					<div class="form-group">
-						<label for="domicilio" class="col-sm-3 col-md-2 control-label">Domicilio</label>
+						<label for="domicilio" class="col-sm-3 col-md-2 control-label">Domicilio<span class="obligatorio"> *</span></label>
 						<div class="col-sm-9 col-md-10">
 							<?php 
 								$nomb_nom='';
@@ -101,7 +101,7 @@
 
 
 					<div class="form-group">
-						<label for="id_equipos" class="col-sm-3 col-md-2 control-label">equipos</label>
+						<label for="id_equipos" class="col-sm-3 col-md-2 control-label">equipos<span class="obligatorio"> *</span></label>
 						<div class="col-sm-9 col-md-10">
 									<select name="id_equipo" id="id_equipo" class="form-control" >
 											<?php foreach ( $equipos as $equipo ){ ?>
@@ -131,7 +131,7 @@
 					</div>
 
 					<div class="form-group">
-						<label for="falla" class="col-sm-3 col-md-2 control-label">Falla</label>
+						<label for="falla" class="col-sm-3 col-md-2 control-label">Falla<span class="obligatorio"> *</span></label>
 						<div class="col-sm-9 col-md-10">
 							<?php 
 								$nomb_nom='';

@@ -1,16 +1,15 @@
-<?php if(! defined('BASEPATH')) exit('No tienes permiso para acceder a este archivo');
+<?php 
+class Modelo_informes extends CI_Model {
+  
+    private $key_hash;
+    private $timezone;
 
-	class modelo_cliente extends CI_Model {
-		
-		private $key_hash;
-		private $timezone;
+    function __construct(){
 
-		function __construct(){
-
-			parent::__construct();
-			$this->load->database("default");
-			$this->key_hash    = $_SERVER['HASH_ENCRYPT'];
-			$this->timezone    = 'UM1';
+      parent::__construct();
+      $this->load->database("default");
+      $this->key_hash    = $_SERVER['HASH_ENCRYPT'];
+      $this->timezone    = 'UM1';
       date_default_timezone_set('America/Mexico_City');       
 
         $this->equipos             = $this->db->dbprefix('catalogo_equipo');
@@ -30,38 +29,6 @@
     ////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    //checar si la unidad ya existe
-        public function check_existente_editar_orden($data){
-                     
-            $this->db->from($this->clientes);
-              $where = '(
-                      (
-                        ( orden = '.$data['orden'].' ) AND ( id <> '.$data['id'].' )
-                       )
-            )';   
-
-            $this->db->where($where);
-            $login = $this->db->get();
-            if ($login->num_rows() > 0)
-                return false;
-            else
-                return true;
-            $login->free_result();
-        }   
-
-
-        public function check_existente_orden($data){
-                     
-            $this->db->from($this->clientes);
-            $this->db->where('orden',$data['orden']);
-            $login = $this->db->get();
-            if ($login->num_rows() > 0)
-                return false;
-            else
-                return true;
-            $login->free_result();
-        }   
-
 
 
         public function total_clientes(){
@@ -77,54 +44,16 @@
 
       public function buscador_clientes($data){
 
-          $cadena = addslashes($data['search']['value']);
-          $inicio = $data['start'];
-          $largo = $data['length'];
-          
-
-          $columa_order = $data['order'][0]['column'];
-                 $order = $data['order'][0]['dir'];
-
-          switch ($columa_order) {
-                   case '0':
-                        $columna = 'c.orden';
-                     break;
-                   case '1':
-                        $columna = 'c.fecha_entrada'; //
-                     break;
-                   case '2':
-                        $columna = 'c.nombre';
-                     break;
-                   case '3':
-                        $columna = 'e.equipo';
-                     break;
-                   case '4':
-                        $columna = 'c.falla';
-                     break;
-                   case '5':
-                        $columna = 'c.id_estatus'; //
-                     break;
-                   
-                   default:
-                        $columna = 'c.orden';
-                     break;
-                 }                 
-
-                                      
+          $cadena = addslashes($data['busqueda']);          
 
           $id_session = $this->db->escape($this->session->userdata('id'));
 
-          $this->db->select("SQL_CALC_FOUND_ROWS *", FALSE); //
           
-          $this->db->select('c.id,c.uid, c.orden, c.baja');
+          $this->db->select('c.orden');
           $this->db->select('DATE_FORMAT((c.fecha_entrada),"%d-%m-%Y") fecha_entrada', false);
-          $this->db->select('c.nombre, c.domicilio, c.referencia, c.id_equipo, c.marca, c.falla');
-          $this->db->select('e.equipo equipo');
-          //$this->db->select('s.estatu estatus');
-
+          $this->db->select('c.nombre, e.equipo equipo, c.falla');
           $this->db->select("( CASE WHEN ( s.id > 0 ) THEN s.estatu else 'Ruta' END ) AS estatus",FALSE);
-
-          
+         
 
           $this->db->from($this->clientes.' as c');
           $this->db->join($this->equipos.' As e', 'c.id_equipo = e.id','LEFT');
@@ -150,64 +79,16 @@
           $this->db->where($where);
     
           //ordenacion
-          $this->db->order_by($columna, $order); 
-
-          //paginacion
-          $this->db->limit($largo,$inicio); 
-
+          $this->db->order_by('orden', 'ASC'); 
 
           $result = $this->db->get();
 
-              if ( $result->num_rows() > 0 ) {
 
-                    $cantidad_consulta = $this->db->query("SELECT FOUND_ROWS() as cantidad");
-                    $found_rows = $cantidad_consulta->row(); 
-                    $registros_filtrados =  ( (int) $found_rows->cantidad);
-
-                  $retorno= " ";  
-                  foreach ($result->result() as $row) {
-                               $dato[]= array(
-                                      
-                                      0=>$row->orden,
-                                      1=>$row->fecha_entrada,
-                                      2=>$row->nombre,
-                                      3=>$row->equipo,
-                                      4=>$row->falla,
-                                      
-                                      5=>$row->estatus, //"Ruta",
-                                      6=>self::clientes_en_uso($row->id),
-                                      7=>$row->id,
-                                      8=>$row->uid,
-                                      9=>$row->baja,
-                                    );
-                      }
-
-
-    
-
-
-                      return json_encode ( array(
-                        "draw"            => intval( $data['draw'] ),
-                        "recordsTotal"    => intval( self::total_clientes() ), 
-                        "recordsFiltered" =>   $registros_filtrados, 
-                        "data"            =>  $dato 
-                      ));
-                    
-              }   
-              else {
-                  $output = array(
-                  "draw" =>  intval( $data['draw'] ),
-                  "recordsTotal" => 0,
-                  "recordsFiltered" =>0,
-                  "aaData" => array()
-                  );
-                  $array[]="";
-                  return json_encode($output);
-                  
-
-              }
-
-              $result->free_result();           
+            if ( $result->num_rows() > 0 )
+               return $result->result();
+            else
+               return False;
+            $result->free_result();       
 
       } 
 
@@ -654,7 +535,7 @@ public function clientes_en_uso($id_cliente) {
 
 
 
-	} 
+  } 
 
 
 ?>

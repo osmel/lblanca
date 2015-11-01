@@ -30,7 +30,7 @@
 				<div class="col-sm-6 col-md-6">
 
 					<div class="form-group">
-						<label for="id_tecnico" class="col-sm-3 col-md-2 control-label">Técnicos</label>
+						<label for="id_tecnico" class="col-sm-3 col-md-2 control-label">Técnicos<span class="obligatorio"> *</span></label>
 						<div class="col-sm-9 col-md-10">
 									<select name="id_tecnico" id="id_tecnico" class="form-control" >
 											<?php foreach ( $tecnicos as $tecnico ){ ?>
@@ -49,7 +49,7 @@
 					</div>					
 
 					<div class="form-group">
-						<label for="falla" class="col-sm-3 col-md-2 control-label">Falla</label>
+						<label for="falla" class="col-sm-3 col-md-2 control-label">Falla<span class="obligatorio"> *</span></label>
 						<div class="col-sm-9 col-md-10">
 							<input type="text" class="form-control" id="falla" name="falla" placeholder="Falla">
 						</div>
@@ -57,7 +57,7 @@
 
 					<!-- comentarios-->	
 					<div class="form-group">
-						<label for="reporte" class="col-sm-3 col-md-2 control-label">Reporte Técnico</label>
+						<label for="reporte" class="col-sm-3 col-md-2 control-label">Reporte Técnico<span class="obligatorio"> *</span></label>
 						<div class="col-sm-9 col-md-10">
 							<textarea class="form-control" name="reporte" id="reporte" rows="7" placeholder="Reporte Técnico"></textarea>
 						</div>
@@ -74,14 +74,14 @@
 
 
 					<div class="form-group">
-						<label for="subtotal" class="col-sm-3 col-md-2 control-label">SubTotal</label>
+						<label for="subtotal" class="col-sm-3 col-md-2 control-label">SubTotal<span class="obligatorio"> *</span></label>
 						<div class="col-sm-9 col-md-10">
 							<input type="text" class="form-control" restriccion="decimal" id="subtotal" name="subtotal" placeholder="Subtotal">
 						</div>
 					</div>
 
 					<div class="form-group">
-						<label for="total" class="col-sm-3 col-md-2 control-label">Total</label>
+						<label for="total" class="col-sm-3 col-md-2 control-label">Total<span class="obligatorio"> *</span></label>
 						<div class="col-sm-9 col-md-10">
 							<input type="text" class="form-control" restriccion="decimal" id="total" name="total" placeholder="Total">
 						</div>
@@ -90,7 +90,7 @@
 
 
 					<div class="form-group">
-						<label for="id_estatus" class="col-sm-3 col-md-2 control-label">Estatus</label>
+						<label for="id_estatus" class="col-sm-3 col-md-2 control-label">Estatus<span class="obligatorio"> *</span></label>
 						<div class="col-sm-9 col-md-10">
 									<select name="id_estatus" id="id_estatus" class="form-control" >
 											<?php foreach ( $estatus as $estatu ){ ?>

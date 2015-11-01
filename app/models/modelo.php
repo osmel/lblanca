@@ -239,6 +239,19 @@
 
 
 
+
+      public function total_usua(){
+            $id_session = $this->db->escape($this->session->userdata('id'));
+            $this->db->from($this->usuarios.' u');
+            $this->db->where('u.id <> '.$id_session);
+            $cant = $this->db->count_all_results();          
+            if ( $cant > 0 )
+               return $cant;
+            else
+               return 0;         
+     }     
+
+
     public function buscador_usuarios($data){
 
           $id_session = $this->db->escape($this->session->userdata('id'));
@@ -247,34 +260,26 @@
           $inicio = $data['start'];
           $largo = $data['length'];
           
-
-          /*
           $columa_order = $data['order'][0]['column'];
                  $order = $data['order'][0]['dir'];
 
           switch ($columa_order) {
                    case '0':
-                        $columna = 'p.codigo';
+                        $columna = 'nombre';
                      break;
                    case '1':
-                        $columna = 'p.nombre';
+                        $columna = 'p.perfil';
                      break;
                    case '2':
-                        $columna = 'p.telefono';
+                        $columna = "email";
                      break;
-                   case '3':
-                        $columna = 'p.coleccion_id_actividad';
-                     break;
-               
+              
                    
                    default:
-                        $columna = 'p.codigo';
+                        $columna = 'nombre';
                      break;
-                 }                 
+          }                 
 
-              */                        
-                 
-          
 
           $this->db->select("SQL_CALC_FOUND_ROWS *", FALSE); //
           
@@ -289,34 +294,26 @@
 
             $this->db->from($this->usuarios.' u');
             $this->db->join($this->perfiles.' p', 'u.id_perfil = p.id_perfil');
-            //eceptuando el usuario q esta logueado
-            //$this->db->where( 'u.id !=', $id_session );
-
 
           //filtro de busqueda
-
+           
           $where = '(
-                      ( u.id <> '.$id_session.' )
-
-               )';   
-        $this->db->where($where);
-
-            /*
-          $where = '(
+                      ( u.id <> '.$id_session.' ) AND
                       (
-                        ( p.codigo LIKE  "%'.$cadena.'%" ) OR (p.nombre LIKE  "%'.$cadena.'%") OR
-                        ( p.telefono LIKE  "%'.$cadena.'%" ) 
+                        ( CONCAT(nombre," ", apellidos) LIKE  "%'.$cadena.'%" ) OR (p.perfil LIKE  "%'.$cadena.'%") OR
+                        ( AES_DECRYPT( email,"'.$this->key_hash.'") LIKE  "%'.$cadena.'%" ) 
                         
                        )
 
                )';   
   
           
-          
+             $this->db->where($where);
+
+            
 
           //ordenacion
           $this->db->order_by($columna, $order); 
-          */  
 
           //paginacion
           $this->db->limit($largo,$inicio); 
@@ -355,7 +352,7 @@
 
                       return json_encode ( array(
                         "draw"            => intval( $data['draw'] ),
-                        "recordsTotal"    => 10, //intval( self::total_consulta_producto($where_total) ), 
+                        "recordsTotal"    =>   intval( self::total_usua() ), 
                         "recordsFiltered" =>   $registros_filtrados, 
                         "data"            =>  $dato 
                       ));

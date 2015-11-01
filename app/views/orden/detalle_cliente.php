@@ -8,7 +8,12 @@
 <input type="hidden" id="id" name="id" value="<?php echo $id; ?>">
 
 	<div class="container">
-		<div class="col-md-9"></div>	
+		<div class="col-md-6"></div>	
+
+		<div class="col-sm-3 col-md-3">
+			     <a style="padding:8px;" id="impresion_detalles" type="button" class="btn btn-success btn-block">Imprimir</a>
+		</div>
+
 		<div class="col-md-3">
 			<a href="<?php echo base_url(); ?>clientes" class="btn btn-danger btn-block"><i class="glyphicon glyphicon-backward"></i> Regresar</a>
 		</div>		
